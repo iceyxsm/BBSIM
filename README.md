@@ -62,23 +62,31 @@ npm run dev:trader
 
 ## API Endpoints
 
-| Method | Path                  | Auth     | Description                    |
-|--------|-----------------------|----------|--------------------------------|
-| POST   | /api/auth/login       | —        | Login, get JWT                 |
-| POST   | /api/auth/register    | Firm     | Create new trader              |
-| GET    | /api/auth/me          | Any      | Get current user               |
-| GET    | /api/orders           | Any      | List orders (firm sees all)    |
-| POST   | /api/orders           | Trader   | Place new order                |
-| DELETE  | /api/orders/:id       | Any      | Cancel order                   |
-| GET    | /api/positions        | Any      | List positions                 |
-| GET    | /api/positions/summary| Any      | P&L summary                    |
-| GET    | /api/trades           | Any      | Trade history                  |
-| GET    | /api/trades/stats     | Any      | Win rate, daily P&L            |
-| GET    | /api/traders          | Firm     | List all traders               |
-| PATCH  | /api/traders/:id      | Firm     | Update limits, disable trader  |
-| GET    | /api/market           | —        | Current market data            |
-| POST   | /api/market/exchange  | —        | Switch exchange feed           |
-| WS     | /ws                   | Token    | Real-time events               |
+| Method | Path                       | Auth     | Description                    |
+|--------|----------------------------|----------|--------------------------------|
+| POST   | /api/auth/login            | —        | Login, get JWT                 |
+| POST   | /api/auth/register         | Firm     | Create new trader              |
+| GET    | /api/auth/me               | Any      | Get current user               |
+| GET    | /api/orders                | Any      | List orders (firm sees all)    |
+| POST   | /api/orders                | Trader   | Place new order                |
+| DELETE  | /api/orders/:id            | Any      | Cancel order                   |
+| GET    | /api/positions             | Any      | List positions                 |
+| GET    | /api/positions/summary     | Any      | P&L summary                    |
+| GET    | /api/trades                | Any      | Trade history                  |
+| GET    | /api/trades/stats          | Any      | Win rate, daily P&L            |
+| GET    | /api/traders               | Firm     | List all traders               |
+| PATCH  | /api/traders/:id           | Firm     | Update limits, disable trader  |
+| GET    | /api/market                | —        | Current market data            |
+| POST   | /api/market/exchange       | —        | Switch exchange feed           |
+| GET    | /api/sessions              | Any      | List recorded sessions         |
+| GET    | /api/sessions/status       | Any      | Recording/replay state         |
+| POST   | /api/sessions/record       | Any      | Start recording (name required)|
+| POST   | /api/sessions/stop         | Any      | Stop recording                 |
+| POST   | /api/sessions/:id/replay   | Any      | Replay session (speed, offset) |
+| POST   | /api/sessions/replay/stop  | Any      | Stop replay                    |
+| POST   | /api/sessions/replay/speed | Any      | Change replay speed live       |
+| DELETE  | /api/sessions/:id          | Any      | Delete a session               |
+| WS     | /ws                        | Token    | Real-time events               |
 
 ## Exchange Feeds
 
@@ -89,6 +97,36 @@ Switch via the firm dashboard or `POST /api/market/exchange`:
 - **coinbase** — Live Coinbase WebSocket
 - **bybit** — Live Bybit WebSocket
 - **cryptofeed** — Python bridge for 40+ exchanges
+
+## Replay Trading
+
+Record any live session and replay it later at any speed to practice or backtest:
+
+```bash
+# Start recording (while live feed is running)
+curl -X POST http://localhost:3001/api/sessions/record \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Morning Session"}'
+
+# Stop recording
+curl -X POST http://localhost:3001/api/sessions/stop \
+  -H "Authorization: Bearer $TOKEN"
+
+# Replay at 5x speed
+curl -X POST http://localhost:3001/api/sessions/SESSION_ID/replay \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"speed": 5}'
+
+# Change speed mid-replay
+curl -X POST http://localhost:3001/api/sessions/replay/speed \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"speed": 10}'
+```
+
+Orders placed during replay execute against the replayed prices — same as live.
 
 ### Cryptofeed Bridge
 

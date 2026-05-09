@@ -1,6 +1,7 @@
 import { getDb } from '../db/init.js';
 import { broadcast } from '../ws/index.js';
 import { DEFAULT_SYMBOLS } from '@bbsim/shared';
+import { recordTick } from './recorder.js';
 import type { ExchangeId } from '@bbsim/shared';
 
 let activeExchange: ExchangeId = 'simulated';
@@ -58,6 +59,7 @@ function startSimulated() {
       }
 
       broadcast({ type: 'market:tick', payload: { symbol: sym, bid, ask, last: newPrice, volume: 0, timestamp: now }, timestamp: now });
+      recordTick({ symbol: sym, bid, ask, last: newPrice, volume: 0, timestamp: now });
     }
   }, 800);
 }
@@ -93,6 +95,7 @@ async function startBinanceWs() {
         }
 
         broadcast({ type: 'market:tick', payload: { symbol, bid, ask, last, volume, timestamp: now }, timestamp: now });
+        recordTick({ symbol, bid, ask, last, volume, timestamp: now });
       }
     } catch { /* skip */ }
   });

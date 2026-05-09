@@ -91,6 +91,32 @@ export function initDb() {
     CREATE INDEX IF NOT EXISTS idx_positions_trader ON positions(trader_id);
     CREATE INDEX IF NOT EXISTS idx_trades_trader ON trades(trader_id);
     CREATE INDEX IF NOT EXISTS idx_trades_executed ON trades(executed_at);
+
+    CREATE TABLE IF NOT EXISTS sessions (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      exchange TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'recording',
+      tick_count INTEGER NOT NULL DEFAULT 0,
+      started_at INTEGER NOT NULL,
+      stopped_at INTEGER,
+      duration_ms INTEGER NOT NULL DEFAULT 0
+    );
+
+    CREATE TABLE IF NOT EXISTS session_ticks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      session_id TEXT NOT NULL,
+      symbol TEXT NOT NULL,
+      bid REAL NOT NULL,
+      ask REAL NOT NULL,
+      last REAL NOT NULL,
+      volume REAL NOT NULL,
+      timestamp INTEGER NOT NULL,
+      offset_ms INTEGER NOT NULL,
+      FOREIGN KEY (session_id) REFERENCES sessions(id)
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_session_ticks_session ON session_ticks(session_id, offset_ms);
   `);
 
   console.log('[DB] Initialized SQLite database');

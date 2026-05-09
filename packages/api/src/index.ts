@@ -10,6 +10,7 @@ import { positionsRouter } from './routes/positions.js';
 import { tradesRouter } from './routes/trades.js';
 import { tradersRouter } from './routes/traders.js';
 import { marketRouter } from './routes/market.js';
+import { sessionsRouter } from './routes/sessions.js';
 import { setupWebSocket } from './ws/index.js';
 import { startMarketFeed } from './services/market-feed.js';
 
@@ -32,6 +33,7 @@ app.use('/api/positions', positionsRouter);
 app.use('/api/trades', tradesRouter);
 app.use('/api/traders', tradersRouter);
 app.use('/api/market', marketRouter);
+app.use('/api/sessions', sessionsRouter);
 
 // WebSocket
 const wss = new WebSocketServer({ server, path: '/ws' });
