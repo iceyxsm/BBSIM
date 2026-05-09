@@ -1,10 +1,13 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { ExchangeProvider } from './context/ExchangeContext';
 import App from './App';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <ExchangeProvider>
+      <App />
+    </ExchangeProvider>
   </StrictMode>
 );

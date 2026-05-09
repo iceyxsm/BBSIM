@@ -8,10 +8,16 @@
 
 .app-header {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  border-bottom: 1px solid #21262d;
+}
+
+.header-left {
+  display: flex;
   align-items: baseline;
   gap: 12px;
-  padding: 16px 24px;
-  border-bottom: 1px solid #21262d;
 }
 
 .app-header h1 {
@@ -24,6 +30,41 @@
 .app-header .subtitle {
   color: #8b949e;
   font-size: 12px;
+}
+
+/* Exchange Selector */
+.exchange-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.exchange-selector label {
+  font-size: 11px;
+  color: #8b949e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.exchange-selector select {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  padding: 6px 10px;
+  color: #e6edf3;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.exchange-selector select:focus {
+  outline: none;
+  border-color: #58a6ff;
+}
+
+.exchange-desc {
+  font-size: 11px;
+  color: #484f58;
 }
 
 .app-grid {
