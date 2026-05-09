@@ -1,0 +1,106 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #0d1117;
+  color: #e6edf3;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app { min-height: 100vh; }
+
+.app-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px; border-bottom: 1px solid #21262d;
+}
+.header-left { display: flex; align-items: baseline; gap: 12px; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.app-header h1 { font-size: 20px; color: #58a6ff; letter-spacing: 2px; }
+.app-header .subtitle { color: #8b949e; font-size: 12px; }
+
+.btn-logout {
+  background: transparent; border: 1px solid #30363d; color: #8b949e;
+  padding: 6px 12px; border-radius: 4px; cursor: pointer; font-family: inherit;
+}
+.btn-logout:hover { border-color: #f85149; color: #f85149; }
+
+.exchange-control { display: flex; align-items: center; gap: 8px; }
+.exchange-control label { font-size: 11px; color: #8b949e; text-transform: uppercase; }
+.exchange-control select {
+  background: #0d1117; border: 1px solid #30363d; border-radius: 4px;
+  padding: 6px 10px; color: #e6edf3; font-family: inherit; font-size: 12px;
+}
+
+.firm-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; padding: 12px; height: calc(100vh - 56px); overflow-y: auto;
+}
+
+.panel { background: #161b22; border: 1px solid #21262d; border-radius: 6px; padding: 12px; }
+.panel h2 { margin: 0 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #8b949e; }
+.panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.panel-header h2 { margin: 0; }
+.empty { color: #484f58; text-align: center; padding: 20px; }
+
+.btn-small {
+  background: #238636; color: #fff; border: none; border-radius: 4px;
+  padding: 4px 10px; font-family: inherit; font-size: 11px; cursor: pointer;
+}
+.btn-small:hover { opacity: 0.85; }
+
+.btn-toggle {
+  border: none; border-radius: 3px; padding: 3px 8px; font-family: inherit;
+  font-size: 11px; font-weight: 600; cursor: pointer;
+}
+.btn-toggle.active { background: #238636; color: #fff; }
+.btn-toggle.inactive { background: #da3633; color: #fff; }
+
+.add-form {
+  display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
+}
+.add-form input {
+  background: #0d1117; border: 1px solid #30363d; border-radius: 4px;
+  padding: 6px 10px; color: #e6edf3; font-family: inherit; font-size: 12px; flex: 1; min-width: 120px;
+}
+.add-form button {
+  background: #238636; color: #fff; border: none; border-radius: 4px;
+  padding: 6px 12px; font-family: inherit; cursor: pointer;
+}
+
+/* Risk Overview */
+.risk-overview { grid-column: 1 / -1; }
+.risk-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.risk-card {
+  background: #0d1117; border: 1px solid #21262d; border-radius: 6px;
+  padding: 16px; display: flex; flex-direction: column; gap: 6px;
+}
+.risk-label { font-size: 11px; color: #8b949e; text-transform: uppercase; }
+.risk-value { font-size: 20px; font-weight: 700; color: #e6edf3; }
+
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; padding: 6px 8px; color: #8b949e; font-weight: 500; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #21262d; }
+td { padding: 5px 8px; border-bottom: 1px solid #161b22; }
+tr:hover { background: #1c2128; }
+
+.symbol { font-weight: 600; color: #f0f6fc; }
+.buy-side { color: #3fb950; font-weight: 600; } .sell-side { color: #f85149; font-weight: 600; }
+.profit { color: #3fb950; } .loss { color: #f85149; }
+.status-filled { color: #3fb950; } .status-pending { color: #d29922; } .status-cancelled { color: #8b949e; }
+
+/* Login */
+.login-page { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+.login-card { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 32px; width: 360px; }
+.login-card h1 { font-size: 28px; color: #58a6ff; text-align: center; letter-spacing: 3px; }
+.login-card .subtitle { color: #8b949e; text-align: center; margin-bottom: 24px; }
+.login-card form { display: flex; flex-direction: column; gap: 14px; }
+.login-card .field { display: flex; flex-direction: column; gap: 4px; }
+.login-card label { font-size: 11px; color: #8b949e; text-transform: uppercase; }
+.login-card input { background: #0d1117; border: 1px solid #30363d; border-radius: 4px; padding: 10px; color: #e6edf3; font-family: inherit; }
+.login-card input:focus { outline: none; border-color: #58a6ff; }
+.login-card button { background: #238636; color: #fff; border: none; border-radius: 4px; padding: 12px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+.login-card .error { color: #f85149; font-size: 12px; text-align: center; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0d1117; }
+::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
