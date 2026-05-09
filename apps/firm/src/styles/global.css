@@ -104,3 +104,17 @@ tr:hover { background: #1c2128; }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #0d1117; }
 ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+
+/* Feed Controls */
+.feed-controls { grid-column: 1 / -1; }
+.controls-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.control-item { display: flex; flex-direction: column; gap: 4px; }
+.control-item label { font-size: 11px; color: #8b949e; text-transform: uppercase; font-weight: 500; }
+.control-item input {
+  background: #0d1117; border: 1px solid #30363d; border-radius: 4px;
+  padding: 8px 10px; color: #e6edf3; font-family: inherit; font-size: 13px;
+}
+.control-item input:focus { outline: none; border-color: #58a6ff; }
+.control-item input:disabled { opacity: 0.4; cursor: not-allowed; }
+.control-item .hint { font-size: 10px; color: #484f58; }
+.saving { font-size: 11px; color: #d29922; margin-top: 8px; }

@@ -6,6 +6,7 @@ import { RiskOverview } from './RiskOverview';
 import { AllPositions } from './AllPositions';
 import { AllOrders } from './AllOrders';
 import { ExchangeControl } from './ExchangeControl';
+import { FeedControlsPanel } from './FeedControlsPanel';
 
 interface Props {
   user: any;
@@ -54,6 +55,7 @@ export function Dashboard({ user, token, onLogout }: Props) {
       </header>
       <main className="firm-grid">
         <RiskOverview stats={stats} />
+        <FeedControlsPanel token={token} />
         <TradersPanel traders={traders} token={token} onRefresh={refresh} />
         <AllPositions positions={positions} />
         <AllOrders orders={orders} />

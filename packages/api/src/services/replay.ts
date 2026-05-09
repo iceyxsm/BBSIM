@@ -1,5 +1,5 @@
 import { getDb } from '../db/init.js';
-import { broadcast } from '../ws/index.js';
+import { processTick } from './feed-filter.js';
 import type { ReplayConfig } from '@bbsim/shared';
 
 let replayTimer: ReturnType<typeof setTimeout> | null = null;
@@ -50,7 +50,6 @@ export function startReplay(config: ReplayConfig): boolean {
 
   // Schedule tick playback
   let tickIndex = 0;
-  const baseOffset = ticks[0].offset_ms;
 
   const scheduleNext = () => {
     if (!isReplaying || tickIndex >= ticks.length) {
@@ -61,24 +60,8 @@ export function startReplay(config: ReplayConfig): boolean {
     const tick = ticks[tickIndex];
     const nextTick = ticks[tickIndex + 1];
 
-    // Update market data
-    db.prepare('INSERT OR REPLACE INTO market_data (symbol, bid, ask, last, volume, updated_at) VALUES (?, ?, ?, ?, ?, ?)')
-      .run(tick.symbol, tick.bid, tick.ask, tick.last, tick.volume, Date.now());
-
-    // Update positions
-    const positions = db.prepare('SELECT * FROM positions WHERE symbol = ?').all(tick.symbol) as any[];
-    for (const pos of positions) {
-      const unrealizedPnl = +((tick.last - pos.avg_entry_price) * pos.quantity).toFixed(2);
-      db.prepare('UPDATE positions SET current_price = ?, unrealized_pnl = ?, updated_at = ? WHERE id = ?')
-        .run(tick.last, unrealizedPnl, Date.now(), pos.id);
-    }
-
-    // Broadcast tick
-    broadcast({
-      type: 'market:tick',
-      payload: { symbol: tick.symbol, bid: tick.bid, ask: tick.ask, last: tick.last, volume: tick.volume, timestamp: Date.now() },
-      timestamp: Date.now(),
-    });
+    // Send tick through feed filter (applies firm controls)
+    processTick({ symbol: tick.symbol, bid: tick.bid, ask: tick.ask, last: tick.last, volume: tick.volume, timestamp: Date.now() });
 
     tickIndex++;
 

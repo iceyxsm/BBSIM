@@ -5,4 +5,5 @@ export * from './types/market';
 export * from './types/trader';
 export * from './types/api';
 export * from './types/session';
+export * from './types/feed-controls';
 export * from './constants';
