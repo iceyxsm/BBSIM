@@ -1,10 +1,18 @@
-const BASE = '';
+let BASE_URL = '';
+
+export function setBaseUrl(url: string) {
+  BASE_URL = url;
+}
+
+export function getBaseUrl(): string {
+  return BASE_URL;
+}
 
 async function request(method: string, path: string, token?: string | null, body?: any) {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const res = await fetch(`${BASE}${path}`, {
+  const res = await fetch(`${BASE_URL}${path}`, {
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined,

@@ -12,9 +12,10 @@ interface DashboardProps {
   trader: any;
   token: string;
   onLogout: () => void;
+  onDisconnect: () => void;
 }
 
-export function Dashboard({ trader, token, onLogout }: DashboardProps) {
+export function Dashboard({ trader, token, onLogout, onDisconnect }: DashboardProps) {
   const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
   const [marketData, setMarketData] = useState<MarketTick[]>([]);
   const [positions, setPositions] = useState<any[]>([]);
@@ -67,6 +68,7 @@ export function Dashboard({ trader, token, onLogout }: DashboardProps) {
           <span className="subtitle">Trader: {trader.name}</span>
         </div>
         <button className="btn-logout" onClick={onLogout}>Logout</button>
+        <button className="btn-logout" onClick={onDisconnect} style={{ marginLeft: 8 }}>⏏ Server</button>
       </header>
       <main className="app-grid">
         <div className="col-left">

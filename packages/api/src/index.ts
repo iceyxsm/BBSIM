@@ -45,7 +45,8 @@ setupWebSocket(wss);
 initDb();
 startMarketFeed();
 
-server.listen(API_PORT, () => {
-  console.log(`[BBSIM API] Running on http://localhost:${API_PORT}`);
-  console.log(`[BBSIM API] WebSocket on ws://localhost:${API_PORT}/ws`);
+server.listen(API_PORT, '0.0.0.0', () => {
+  console.log(`[BBSIM API] Running on http://0.0.0.0:${API_PORT}`);
+  console.log(`[BBSIM API] WebSocket on ws://0.0.0.0:${API_PORT}/ws`);
+  console.log(`[BBSIM API] Traders can connect from the local network`);
 });

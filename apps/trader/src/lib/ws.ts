@@ -1,4 +1,5 @@
 import type { WsMessage } from '@bbsim/shared';
+import { getBaseUrl } from './api';
 
 type WsHandler = (msg: WsMessage) => void;
 
@@ -6,8 +7,21 @@ let socket: WebSocket | null = null;
 let handlers: WsHandler[] = [];
 
 export function connectWs(token: string) {
-  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-  socket = new WebSocket(`${protocol}//${window.location.host}/ws`);
+  const baseUrl = getBaseUrl();
+  let wsUrl: string;
+
+  if (baseUrl) {
+    // Remote server — construct WS URL from base
+    const url = new URL(baseUrl);
+    const protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+    wsUrl = `${protocol}//${url.host}/ws`;
+  } else {
+    // Dev mode — use current host
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    wsUrl = `${protocol}//${window.location.host}/ws`;
+  }
+
+  socket = new WebSocket(wsUrl);
 
   socket.onopen = () => {
     socket?.send(JSON.stringify({ type: 'auth', token }));

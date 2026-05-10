@@ -1,0 +1,17 @@
+.{
+    .id = "io.bbsim.trader",
+    .name = "bbsim-trader",
+    .display_name = "BBSIM — Trader",
+    .version = "1.0.0",
+    .web_engine = "system",
+    .permissions = .{ "window", "js_bridge" },
+    .capabilities = .{ "webview", "js_bridge" },
+    .security = .{
+        .navigation = .{
+            .allowed_origins = .{ "zero://app", "http://*:3001" },
+        },
+    },
+    .windows = .{
+        .{ .label = "main", .title = "BBSIM — Trader", .width = 1200, .height = 800 },
+    },
+}

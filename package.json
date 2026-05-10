@@ -10,6 +10,8 @@
     "dev": "pnpm --filter @bbsim/api dev & pnpm --filter @bbsim/firm dev & pnpm --filter @bbsim/trader dev",
     "build": "pnpm --filter @bbsim/shared build && pnpm --filter @bbsim/api build && pnpm --filter @bbsim/firm build && pnpm --filter @bbsim/trader build",
     "seed": "pnpm --filter @bbsim/api seed",
+    "firm": "node desktop/firm/start.js",
+    "trader": "node desktop/trader/start.js",
     "bridge": "cd bridge && python server.py"
   }
 }
