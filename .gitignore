@@ -31,3 +31,9 @@ Thumbs.db
 
 # Lockfiles (npm)
 package-lock.json
+
+ext.txt
+experiments/
+
+apps/firm/.zig-cache/
+apps/trader/.zig-cache/

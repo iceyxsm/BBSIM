@@ -1,0 +1,40 @@
+{
+  "productName": "BBSIM Trader",
+  "version": "1.0.0",
+  "identifier": "io.bbsim.trader",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devUrl": "http://localhost:5174",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "BBSIM — Trader",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 1024,
+        "minHeight": 700,
+        "maximized": true,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}

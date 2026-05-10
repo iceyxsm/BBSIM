@@ -1,33 +1,25 @@
-# BBSIM — Start Firm (Broker) Desktop App
-# Starts: API server + Vite frontend + Zig native shell
-# Usage: .\scripts\dev-firm.ps1
+# BBSIM — Start Firm (Broker) Desktop App with Tauri
+# Usage: .\scripts\windows\dev-firm.ps1
 
 $ErrorActionPreference = "Continue"
-$root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
+$root = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path))
+$env:PATH = "$env:USERPROFILE\.cargo\bin;C:\Users\91952\AppData\Local\pnpm\bin;$env:PATH"
 
 Write-Host "Starting BBSIM Firm (Broker Side)..." -ForegroundColor Cyan
-Write-Host ""
 
 # Start API server in background
-Write-Host "[1/3] Starting API server (port 3001)..." -ForegroundColor Yellow
-$api = Start-Process -FilePath "pnpm" -ArgumentList "--filter @bbsim/api dev" -WorkingDirectory $root -PassThru -NoNewWindow
-Start-Sleep -Seconds 2
-
-# Start Vite frontend in background
-Write-Host "[2/3] Starting Vite dev server (port 5173)..." -ForegroundColor Yellow
-$vite = Start-Process -FilePath "pnpm" -ArgumentList "--filter @bbsim/firm dev" -WorkingDirectory $root -PassThru -NoNewWindow
+$pnpm = "C:\Users\91952\AppData\Local\pnpm\bin\pnpm.cmd"
+Write-Host "[1/2] Starting API server (port 3001)..." -ForegroundColor Yellow
+$api = Start-Process -FilePath $pnpm -ArgumentList "--filter","@bbsim/api","dev" -PassThru -WindowStyle Hidden -WorkingDirectory $root
 Start-Sleep -Seconds 3
 
-# Start Zig native shell
-Write-Host "[3/3] Building and launching native shell..." -ForegroundColor Yellow
-$env:PATH = "C:\zig\zig-x86_64-windows-0.16.0;C:\Users\91952\AppData\Roaming\npm;$env:PATH"
+# Launch Tauri (handles Vite + native window)
+Write-Host "[2/2] Launching Tauri desktop app..." -ForegroundColor Yellow
 Push-Location "$root\apps\firm"
-zig build dev
+& $pnpm tauri:dev
 Pop-Location
 
-# Cleanup on exit
-Write-Host ""
+# Cleanup
 Write-Host "Shutting down..." -ForegroundColor Red
 if ($api -and !$api.HasExited) { Stop-Process -Id $api.Id -Force -ErrorAction SilentlyContinue }
-if ($vite -and !$vite.HasExited) { Stop-Process -Id $vite.Id -Force -ErrorAction SilentlyContinue }
-Write-Host "Done." -ForegroundColor Green
+Get-NetTCPConnection -LocalPort 3001,5173 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }

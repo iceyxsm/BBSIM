@@ -53,6 +53,29 @@ export function Login({ onLogin }: LoginProps) {
           <div className="trend-line"></div>
           <div className="trend-line"></div>
         </div>
+        <div className="background-chart">
+          <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="chartGradient" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#00d4ff" stopOpacity="0.2" />
+                <stop offset="50%" stopColor="#00ff88" stopOpacity="1" />
+                <stop offset="100%" stopColor="#00d4ff" stopOpacity="0.4" />
+              </linearGradient>
+              <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#00ff88" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#00ff88" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <path
+              className="chart-fill"
+              d="M0,220 L60,200 L120,210 L180,170 L240,180 L300,140 L360,155 L420,110 L480,130 L540,90 L600,120 L660,70 L720,100 L780,60 L840,85 L900,50 L960,75 L1020,40 L1080,65 L1140,30 L1200,55 L1200,300 L0,300 Z"
+            />
+            <path
+              className="chart-stroke"
+              d="M0,220 L60,200 L120,210 L180,170 L240,180 L300,140 L360,155 L420,110 L480,130 L540,90 L600,120 L660,70 L720,100 L780,60 L840,85 L900,50 L960,75 L1020,40 L1080,65 L1140,30 L1200,55"
+            />
+          </svg>
+        </div>
         <div className="particle" style={{ left: '20%', top: '30%' }}></div>
         <div className="particle" style={{ left: '60%', top: '20%' }}></div>
         <div className="particle" style={{ left: '80%', top: '60%' }}></div>

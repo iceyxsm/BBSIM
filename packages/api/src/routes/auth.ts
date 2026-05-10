@@ -46,6 +46,56 @@ authRouter.post('/login', (req, res) => {
   });
 });
 
+// POST /api/auth/register-self (self-service signup; trader by default, firm allowed)
+authRouter.post('/register-self', (req, res) => {
+  const { name, email, password, role = 'trader' } = req.body;
+  if (!name || !email || !password) {
+    res.status(400).json({ success: false, error: 'Name, email, and password required' });
+    return;
+  }
+  if (role !== 'trader' && role !== 'firm') {
+    res.status(400).json({ success: false, error: 'Invalid role' });
+    return;
+  }
+
+  const db = getDb();
+  const id = nanoid();
+  const now = Date.now();
+  const maxPositionSize = role === 'firm' ? 999999999 : 100000;
+  const maxDailyLoss = role === 'firm' ? 999999999 : 5000;
+
+  try {
+    db.prepare(`
+      INSERT INTO traders (id, name, email, password_hash, role, max_position_size, max_daily_loss, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(id, name, email, password, role, maxPositionSize, maxDailyLoss, now);
+
+    const token = signToken({ traderId: id, role });
+    res.json({
+      success: true,
+      data: {
+        token,
+        trader: {
+          id,
+          name,
+          email,
+          role,
+          maxPositionSize,
+          maxDailyLoss,
+          isActive: true,
+          createdAt: now,
+        },
+      },
+    });
+  } catch (err: any) {
+    if (err.message?.includes('UNIQUE')) {
+      res.status(409).json({ success: false, error: 'Email already exists' });
+    } else {
+      res.status(500).json({ success: false, error: 'Failed to create account' });
+    }
+  }
+});
+
 // POST /api/auth/register (firm only can create traders)
 authRouter.post('/register', authenticate, (req, res) => {
   const auth = (req as any).auth as AuthPayload;

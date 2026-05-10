@@ -10,9 +10,10 @@
     "dev": "pnpm --filter @bbsim/api dev & pnpm --filter @bbsim/firm dev & pnpm --filter @bbsim/trader dev",
     "build": "pnpm --filter @bbsim/shared build && pnpm --filter @bbsim/api build && pnpm --filter @bbsim/firm build && pnpm --filter @bbsim/trader build",
     "seed": "pnpm --filter @bbsim/api seed",
-    "firm": "powershell -ExecutionPolicy Bypass -File scripts/windows/dev-firm.ps1",
-    "trader": "powershell -ExecutionPolicy Bypass -File scripts/windows/dev-trader.ps1",
-    "all": "powershell -ExecutionPolicy Bypass -File scripts/windows/dev-all.ps1",
+    "firm": "pnpm --filter @bbsim/firm tauri:dev",
+    "trader": "pnpm --filter @bbsim/trader tauri:dev",
+    "firm:build": "pnpm --filter @bbsim/firm tauri:build",
+    "trader:build": "pnpm --filter @bbsim/trader tauri:build",
     "bridge": "cd bridge && python server.py"
   }
 }
