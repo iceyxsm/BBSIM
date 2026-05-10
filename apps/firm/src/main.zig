@@ -11,7 +11,7 @@ const App = struct {
         return .{
             .context = self,
             .name ="firm",
-            .source = zero_native.frontend.productionSource(.{ .dist ="frontend/dist" }),
+            .source = zero_native.frontend.productionSource(.{ .dist = "dist" }),
             .source_fn = source,
         };
     }
@@ -19,7 +19,7 @@ const App = struct {
     fn source(context: *anyopaque) anyerror!zero_native.WebViewSource {
         const self: *@This() = @ptrCast(@alignCast(context));
         return zero_native.frontend.sourceFromEnv(self.env_map, .{
-            .dist ="frontend/dist",
+            .dist = "dist",
             .entry = "index.html",
         });
     }

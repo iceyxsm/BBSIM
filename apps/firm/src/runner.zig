@@ -156,7 +156,7 @@ fn runWindows(app: zero_native.App, options: RunOptions, init: std.process.Init)
     var buffers: StateBuffers = undefined;
     var app_info = options.appInfo();
     const store = prepareStateStore(init.io, init.environ_map, &app_info, &buffers);
-    var windows_platform = try zero_native.platform.windows.WindowsPlatform.initWithOptions(zero_native.geometry.SizeF.init(720, 480), webEngine(), app_info);
+    var windows_platform = try zero_native.platform.windows.WindowsPlatform.initWithOptions(zero_native.geometry.SizeF.init(1400, 900), webEngine(), app_info);
     defer windows_platform.deinit();
     var trace_sink = StdoutTraceSink{};
     var log_buffers: zero_native.debug.LogPathBuffers = .{};

@@ -1,16 +1,18 @@
 # BBSIM — Brokers Book Simulator
 
-A full-stack trading simulator with firm-side risk management and trader-side execution. Supports live market data from multiple exchanges via direct WebSocket or Python cryptofeed bridge.
+A full-stack trading simulator with firm-side risk management and trader-side execution. Native desktop apps powered by Zig + zero-native with React frontends. Supports live market data from multiple exchanges via direct WebSocket or Python cryptofeed bridge.
 
 ## Architecture
 
 ```
 BBSIM/
 ├── apps/
-│   ├── firm/              # Firm admin dashboard (React + TS)
-│   │   └── src/           # Risk overview, trader management, all positions/orders
-│   └── trader/            # Trader client (React + TS)
-│       └── src/           # Market watch, order entry, positions, trade history
+│   ├── firm/              # Firm admin dashboard (Zig native + React + TS)
+│   │   ├── src/           # Zig native shell + React components
+│   │   └── build.zig      # Zig build with zero-native
+│   └── trader/            # Trader client (Zig native + React + TS)
+│       ├── src/           # Zig native shell + React components
+│       └── build.zig      # Zig build with zero-native
 ├── packages/
 │   ├── api/               # REST + WebSocket API server (Express + SQLite)
 │   │   └── src/
@@ -22,11 +24,15 @@ BBSIM/
 │   └── shared/            # Shared types, constants
 │       └── src/types/     # Order, Position, Trade, Trader, Market, API types
 ├── bridge/                # Python cryptofeed bridge server
-└── package.json           # npm workspaces root
+├── scripts/
+│   ├── windows/           # PowerShell launch scripts
+│   └── linux/             # Bash launch scripts
+└── package.json           # pnpm workspaces root
 ```
 
 ## Tech Stack
 
+- **Native Shell**: Zig 0.16 + zero-native (WebView2 on Windows, WebKit on Linux/macOS)
 - **API**: Express + TypeScript + better-sqlite3 (fast local DB, WAL mode)
 - **Firm Dashboard**: Vite + React + TypeScript (port 5173)
 - **Trader Client**: Vite + React + TypeScript (port 5174)
@@ -34,24 +40,89 @@ BBSIM/
 - **Market Feed**: Simulated / Binance / Coinbase / Bybit / Cryptofeed Bridge
 - **Real-time**: WebSocket for live market ticks + order/trade events
 
-## Getting Started
+## Prerequisites
+
+- [Zig 0.16.0](https://ziglang.org/download/) — add to PATH
+- [Node.js 18+](https://nodejs.org/)
+- [pnpm](https://pnpm.io/) — `npm install -g pnpm`
+- [zero-native](https://www.npmjs.com/package/zero-native) — `npm install -g zero-native`
+
+## Quick Start
 
 ```bash
-# Install all dependencies
-npm install
+# Clone and install
+git clone <repo-url> && cd BBSIM
+pnpm install
 
 # Seed the database (creates admin + sample trader)
-npm run seed -w @bbsim/api
-
-# Start the API server
-npm run dev:api
-
-# Start the firm dashboard (separate terminal)
-npm run dev:firm
-
-# Start the trader client (separate terminal)
-npm run dev:trader
+pnpm seed
 ```
+
+---
+
+## Running the Desktop Apps
+
+### Windows
+
+```powershell
+# Broker (Firm) side — starts API + Vite + native window
+.\scripts\windows\dev-firm.ps1
+
+# Trader (User) side — starts API + Vite + native window
+.\scripts\windows\dev-trader.ps1
+
+# Everything at once — both apps + API
+.\scripts\windows\dev-all.ps1
+```
+
+Or via pnpm:
+
+```powershell
+pnpm firm
+pnpm trader
+pnpm all
+```
+
+### Linux / macOS
+
+```bash
+# Make scripts executable (first time only)
+chmod +x scripts/linux/*.sh
+
+# Broker (Firm) side
+./scripts/linux/dev-firm.sh
+
+# Trader (User) side
+./scripts/linux/dev-trader.sh
+
+# Everything at once
+./scripts/linux/dev-all.sh
+```
+
+---
+
+## Manual Start (step by step)
+
+If you prefer running each piece separately:
+
+```bash
+# Terminal 1 — API server (port 3001)
+pnpm dev:api
+
+# Terminal 2 — Firm frontend (port 5173)
+pnpm dev:firm
+
+# Terminal 3 — Firm native shell
+cd apps/firm && zig build dev
+
+# Terminal 4 — Trader frontend (port 5174)
+pnpm dev:trader
+
+# Terminal 5 — Trader native shell
+cd apps/trader && zig build dev
+```
+
+---
 
 ## Default Credentials
 

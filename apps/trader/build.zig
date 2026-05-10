@@ -94,11 +94,11 @@ pub fn build(b: *std.Build) void {
     linkPlatform(b, target, app_mod, exe, selected_platform, web_engine, zero_native_path, cef_dir, cef_auto_install);
     b.installArtifact(exe);
 
-    const frontend_install = b.addSystemCommand(&.{ "npm", "install", "--prefix", "frontend" });
+    const frontend_install = b.addSystemCommand(&.{ "pnpm", "install" });
     const frontend_install_step = b.step("frontend-install", "Install frontend dependencies");
     frontend_install_step.dependOn(&frontend_install.step);
 
-    const frontend_build = b.addSystemCommand(&.{ "npm", "--prefix", "frontend", "run", "build" });
+    const frontend_build = b.addSystemCommand(&.{ "pnpm", "run", "build" });
     frontend_build.step.dependOn(&frontend_install.step);
     const frontend_step = b.step("frontend-build", "Build the frontend");
     frontend_step.dependOn(&frontend_build.step);
@@ -109,7 +109,7 @@ pub fn build(b: *std.Build) void {
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run.step);
 
-    const dev = b.addSystemCommand(&.{ "zero-native", "dev", "--manifest", "app.zon", "--binary" });
+    const dev = b.addSystemCommand(&.{ "C:\\Users\\91952\\AppData\\Roaming\\npm\\zero-native.cmd", "dev", "--manifest", "app.zon", "--binary" });
     dev.addFileArg(exe.getEmittedBin());
     dev.step.dependOn(&exe.step);
     dev.step.dependOn(&frontend_install.step);
@@ -117,13 +117,13 @@ pub fn build(b: *std.Build) void {
     dev_step.dependOn(&dev.step);
 
     const package = b.addSystemCommand(&.{
-        "zero-native",
+        "C:\\Users\\91952\\AppData\\Roaming\\npm\\zero-native.cmd",
         "package",
         "--target",
         @tagName(package_target),
         "--manifest",
         "app.zon",
-        "--assets","frontend/dist",
+        "--assets", "dist",
         "--optimize",
         optimize_name,
         "--output",
