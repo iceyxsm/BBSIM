@@ -1,9 +1,9 @@
 import { nanoid } from 'nanoid';
-import { initDb, getDb } from './db/init.js';
+import { initDb, getDb } from './shared/db/index.js';
 
 /**
  * Seeds the database with a firm admin and a sample trader.
- * Run: npm run seed -w @bbsim/api
+ * Run: npm run seed -w @qalgo/api
  */
 
 initDb();

@@ -1,4 +1,4 @@
-import type { WsMessage } from '@bbsim/shared';
+import type { WsMessage } from '@qalgo/shared';
 
 type WsHandler = (msg: WsMessage) => void;
 

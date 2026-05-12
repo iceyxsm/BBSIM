@@ -1,28 +1,23 @@
-# BBSIM — Brokers Book Simulator
+# QALGO — Algorithmic Trading Platform
 
-A full-stack trading simulator with firm-side risk management and trader-side execution. Native desktop apps powered by Zig + zero-native with React frontends. Supports live market data from multiple exchanges via direct WebSocket or Python cryptofeed bridge.
+A full-stack trading platform with firm-side risk management and execution. Native desktop app powered by Tauri with a React frontend. Supports live market data from multiple exchanges via direct WebSocket or Python cryptofeed bridge.
 
 ## Architecture
 
 ```
-BBSIM/
+QALGO/
 ├── apps/
-│   ├── firm/              # Firm admin dashboard (Zig native + React + TS)
-│   │   ├── src/           # Zig native shell + React components
-│   │   └── build.zig      # Zig build with zero-native
-│   └── trader/            # Trader client (Zig native + React + TS)
-│       ├── src/           # Zig native shell + React components
-│       └── build.zig      # Zig build with zero-native
+│   └── firm/              # Trading platform desktop app (Tauri + React + TS)
+│       ├── src/           # React components + Tauri integration
+│       └── src-tauri/     # Tauri native shell config
 ├── packages/
 │   ├── api/               # REST + WebSocket API server (Express + SQLite)
 │   │   └── src/
-│   │       ├── routes/    # auth, orders, positions, trades, traders, market
-│   │       ├── services/  # execution engine, market feed
-│   │       ├── ws/        # WebSocket broadcast
-│   │       ├── middleware/# JWT auth
-│   │       └── db/        # SQLite schema + init
+│   │       ├── features/  # auth, orders, positions, trades, traders, market, sessions
+│   │       ├── shared/    # db, ws, middleware
+│   │       └── index.ts   # Entry point
 │   └── shared/            # Shared types, constants
-│       └── src/types/     # Order, Position, Trade, Trader, Market, API types
+│       └── src/           # Order, Position, Trade, Trader, Market, API types
 ├── bridge/                # Python cryptofeed bridge server
 ├── scripts/
 │   ├── windows/           # PowerShell launch scripts
@@ -32,26 +27,24 @@ BBSIM/
 
 ## Tech Stack
 
-- **Native Shell**: Zig 0.16 + zero-native (WebView2 on Windows, WebKit on Linux/macOS)
+- **Desktop Shell**: Tauri 2 (Rust + WebView2 on Windows, WebKit on Linux/macOS)
 - **API**: Express + TypeScript + better-sqlite3 (fast local DB, WAL mode)
-- **Firm Dashboard**: Vite + React + TypeScript (port 5173)
-- **Trader Client**: Vite + React + TypeScript (port 5174)
+- **Frontend**: Vite + React + TypeScript (port 5173)
 - **Shared Types**: TypeScript package consumed by all
 - **Market Feed**: Simulated / Binance / Coinbase / Bybit / Cryptofeed Bridge
 - **Real-time**: WebSocket for live market ticks + order/trade events
 
 ## Prerequisites
 
-- [Zig 0.16.0](https://ziglang.org/download/) — add to PATH
 - [Node.js 18+](https://nodejs.org/)
 - [pnpm](https://pnpm.io/) — `npm install -g pnpm`
-- [zero-native](https://www.npmjs.com/package/zero-native) — `npm install -g zero-native`
+- [Rust](https://rustup.rs/) — for Tauri builds
 
 ## Quick Start
 
 ```bash
 # Clone and install
-git clone <repo-url> && cd BBSIM
+git clone <repo-url> && cd QALGO
 pnpm install
 
 # Seed the database (creates admin + sample trader)
@@ -60,66 +53,26 @@ pnpm seed
 
 ---
 
-## Running the Desktop Apps
+## Running the Desktop App
 
 ### Windows
 
 ```powershell
-# Broker (Firm) side — starts API + Vite + native window
-.\scripts\windows\dev-firm.ps1
+# Quick launch — starts API + Vite + native window
+.\start.ps1
 
-# Trader (User) side — starts API + Vite + native window
-.\scripts\windows\dev-trader.ps1
-
-# Everything at once — both apps + API
-.\scripts\windows\dev-all.ps1
+# Or via pnpm
+pnpm app
 ```
 
-Or via pnpm:
-
-```powershell
-pnpm firm
-pnpm trader
-pnpm all
-```
-
-### Linux / macOS
-
-```bash
-# Make scripts executable (first time only)
-chmod +x scripts/linux/*.sh
-
-# Broker (Firm) side
-./scripts/linux/dev-firm.sh
-
-# Trader (User) side
-./scripts/linux/dev-trader.sh
-
-# Everything at once
-./scripts/linux/dev-all.sh
-```
-
----
-
-## Manual Start (step by step)
-
-If you prefer running each piece separately:
+### Manual Start (step by step)
 
 ```bash
 # Terminal 1 — API server (port 3001)
 pnpm dev:api
 
-# Terminal 2 — Firm frontend (port 5173)
-pnpm dev:firm
-
-# Terminal 3 — Firm native shell
-cd apps/firm && zig build dev
-
-# Terminal 4 — Trader frontend (port 5174)
-pnpm dev:trader
-
-# Terminal 5 — Trader native shell
-cd apps/trader && zig build dev
+# Terminal 2 — Frontend + Tauri desktop
+pnpm app
 ```
 
 ---
@@ -161,7 +114,7 @@ cd apps/trader && zig build dev
 
 ## Exchange Feeds
 
-Switch via the firm dashboard or `POST /api/market/exchange`:
+Switch via the dashboard or `POST /api/market/exchange`:
 
 - **simulated** — Random walk, no external deps
 - **binance** — Live Binance WebSocket (server-side)

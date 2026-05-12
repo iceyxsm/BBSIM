@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../lib/api';
-import type { FeedControls } from '@bbsim/shared';
+import type { FeedControls } from '@qalgo/shared';
 
 interface Props {
   token: string;

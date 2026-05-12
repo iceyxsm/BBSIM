@@ -3,7 +3,7 @@ import { Login } from './components/Login';
 import { Dashboard } from './components/Dashboard';
 import { api } from './lib/api';
 
-const TOKEN_KEY = 'bbsim_firm_token';
+const TOKEN_KEY = 'qalgo_token';
 
 function readToken(): string | null {
   return localStorage.getItem(TOKEN_KEY) ?? sessionStorage.getItem(TOKEN_KEY);

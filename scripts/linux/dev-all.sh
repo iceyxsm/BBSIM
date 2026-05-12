@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# BBSIM — Start Everything with Tauri
+# QALGO — Start Full Development Environment
 # Usage: ./scripts/linux/dev-all.sh
 
 set -e
@@ -17,22 +17,16 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 echo -e "\033[36m========================================\033[0m"
-echo -e "\033[36m  BBSIM — Full Development Environment\033[0m"
+echo -e "\033[36m  QALGO — Full Development Environment\033[0m"
 echo -e "\033[36m========================================\033[0m"
 
 # Start API
-echo -e "\033[33m[1/3] Starting API server...\033[0m"
-cd "$ROOT" && pnpm --filter @bbsim/api dev &
+echo -e "\033[33m[1/2] Starting API server...\033[0m"
+cd "$ROOT" && pnpm --filter @qalgo/api dev &
 PIDS+=($!)
 sleep 3
 
-# Start Firm Tauri
-echo -e "\033[33m[2/3] Launching Firm app...\033[0m"
-cd "$ROOT/apps/firm" && pnpm tauri:dev &
-PIDS+=($!)
-sleep 2
-
-# Start Trader Tauri (foreground)
-echo -e "\033[33m[3/3] Launching Trader app...\033[0m"
-cd "$ROOT/apps/trader"
+# Start App Tauri (foreground)
+echo -e "\033[33m[2/2] Launching App...\033[0m"
+cd "$ROOT/apps/firm"
 pnpm tauri:dev

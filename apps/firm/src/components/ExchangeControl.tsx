@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { api } from '../lib/api';
-import { EXCHANGES } from '@bbsim/shared';
+import { EXCHANGES } from '@qalgo/shared';
 
 interface Props {
   token: string;

@@ -1,19 +1,16 @@
 {
-  "name": "bbsim",
+  "name": "qalgo",
   "version": "1.0.0",
   "private": true,
-  "description": "BBSIM — Brokers Book Simulator",
+  "description": "QALGO — Algorithmic Trading Platform",
   "scripts": {
-    "dev:api": "pnpm --filter @bbsim/api dev",
-    "dev:firm": "pnpm --filter @bbsim/firm dev",
-    "dev:trader": "pnpm --filter @bbsim/trader dev",
-    "dev": "pnpm --filter @bbsim/api dev & pnpm --filter @bbsim/firm dev & pnpm --filter @bbsim/trader dev",
-    "build": "pnpm --filter @bbsim/shared build && pnpm --filter @bbsim/api build && pnpm --filter @bbsim/firm build && pnpm --filter @bbsim/trader build",
-    "seed": "pnpm --filter @bbsim/api seed",
-    "firm": "pnpm --filter @bbsim/firm tauri:dev",
-    "trader": "pnpm --filter @bbsim/trader tauri:dev",
-    "firm:build": "pnpm --filter @bbsim/firm tauri:build",
-    "trader:build": "pnpm --filter @bbsim/trader tauri:build",
+    "dev:api": "pnpm --filter @qalgo/api dev",
+    "dev:app": "pnpm --filter @qalgo/app dev",
+    "dev": "pnpm --filter @qalgo/api dev & pnpm --filter @qalgo/app dev",
+    "build": "pnpm --filter @qalgo/shared build && pnpm --filter @qalgo/api build && pnpm --filter @qalgo/app build",
+    "seed": "pnpm --filter @qalgo/api seed",
+    "app": "pnpm --filter @qalgo/app tauri:dev",
+    "app:build": "pnpm --filter @qalgo/app tauri:build",
     "bridge": "cd bridge && python server.py"
   }
 }

@@ -13,5 +13,5 @@ pub fn run() {
             Ok(())
         })
         .run(tauri::generate_context!())
-        .expect("error while running BBSIM Firm");
+        .expect("error while running QALGO");
 }

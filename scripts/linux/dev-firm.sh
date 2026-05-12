@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# BBSIM — Start Firm (Broker) Desktop App with Tauri
+# QALGO — Start Desktop App with Tauri
 # Usage: ./scripts/linux/dev-firm.sh
 
 set -e
@@ -16,11 +16,11 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-echo -e "\033[36mStarting BBSIM Firm (Broker Side)...\033[0m"
+echo -e "\033[36mStarting QALGO Desktop App...\033[0m"
 
 # Start API server
 echo -e "\033[33m[1/2] Starting API server (port 3001)...\033[0m"
-cd "$ROOT" && pnpm --filter @bbsim/api dev &
+cd "$ROOT" && pnpm --filter @qalgo/api dev &
 PIDS+=($!)
 sleep 3
 

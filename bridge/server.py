@@ -1,5 +1,5 @@
 """
-BBSIM Cryptofeed Bridge Server
+QALGO Cryptofeed Bridge Server
 
 Connects to crypto exchanges via cryptofeed and forwards normalized
 market data to the React frontend over WebSocket.
@@ -152,11 +152,11 @@ def run_bridge(exchange_name: str, port: int):
     ExchangeClass = EXCHANGE_MAP[exchange_name]
     symbols = DEFAULT_SYMBOLS.get(exchange_name, DEFAULT_SYMBOLS['binance'])
 
-    print(f"[Bridge] Starting BBSIM Cryptofeed Bridge")
+    print(f"[Bridge] Starting QALGO Cryptofeed Bridge")
     print(f"[Bridge] Exchange: {exchange_name}")
     print(f"[Bridge] Symbols: {symbols}")
     print(f"[Bridge] WebSocket server on ws://localhost:{port}")
-    print(f"[Bridge] Connect your BBSIM frontend to this address")
+    print(f"[Bridge] Connect your QALGO frontend to this address")
     print()
 
     # Start WebSocket server for frontend clients
@@ -183,7 +183,7 @@ def run_bridge(exchange_name: str, port: int):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='BBSIM Cryptofeed Bridge Server')
+    parser = argparse.ArgumentParser(description='QALGO Cryptofeed Bridge Server')
     parser.add_argument('--exchange', '-e', default='binance',
                         help=f"Exchange to connect to ({', '.join(EXCHANGE_MAP.keys())})")
     parser.add_argument('--port', '-p', type=int, default=8765,

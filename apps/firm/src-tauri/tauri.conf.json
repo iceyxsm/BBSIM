@@ -1,7 +1,7 @@
 {
-  "productName": "BBSIM Firm",
+  "productName": "QALGO",
   "version": "1.0.0",
-  "identifier": "io.bbsim.firm",
+  "identifier": "io.qalgo.app",
   "build": {
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build",
@@ -12,7 +12,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "BBSIM — Firm Dashboard",
+        "title": "QALGO — Trading Platform",
         "width": 1400,
         "height": 900,
         "minWidth": 1024,

@@ -13,5 +13,4 @@ export const DEFAULT_SYMBOLS = [
 
 export const API_PORT = 3001;
 export const FIRM_PORT = 5173;
-export const TRADER_PORT = 5174;
 export const BRIDGE_PORT = 8765;

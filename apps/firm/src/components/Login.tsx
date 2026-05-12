@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { User, Lock, ArrowRight, Mail, Info } from 'lucide-react';
+import { User, Lock, ArrowRight, Mail, Info, Eye, EyeOff } from 'lucide-react';
 import { api } from '../lib/api';
 import '../styles/login.css';
 
@@ -152,7 +152,7 @@ interface Props {
 
 type Mode = 'login' | 'signup';
 
-const REMEMBERED_EMAIL_KEY = 'bbsim_firm_remembered_email';
+const REMEMBERED_EMAIL_KEY = 'qalgo_remembered_email';
 
 export function Login({ onLogin }: Props) {
   const [mode, setMode] = useState<Mode>('login');
@@ -163,6 +163,7 @@ export function Login({ onLogin }: Props) {
     () => !!localStorage.getItem(REMEMBERED_EMAIL_KEY)
   );
   const [showForgot, setShowForgot] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -224,8 +225,8 @@ export function Login({ onLogin }: Props) {
       <div className="login-content">
         <div className="glass-card">
           <div className="auth-header">
-            <h1 className="logo-text">BBSIM</h1>
-            <p className="welcome-text">Firm Administration</p>
+            <h1 className="logo-text">QALGO</h1>
+            <p className="welcome-text">Trading Platform</p>
           </div>
 
           <div className="auth-tabs" role="tablist">
@@ -289,9 +290,9 @@ export function Login({ onLogin }: Props) {
 
             <div className="floating-field">
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 id="auth-password"
-                className="floating-input"
+                className="floating-input has-toggle"
                 placeholder=" "
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -303,6 +304,15 @@ export function Login({ onLogin }: Props) {
                 <Lock size={14} />
                 <span>Password</span>
               </label>
+              <button
+                type="button"
+                className="password-eye"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
             </div>
 
             {!isSignup && (
